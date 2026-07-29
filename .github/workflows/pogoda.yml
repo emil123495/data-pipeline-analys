@@ -1,0 +1,33 @@
+name: Weather robot
+
+on:
+  schedule:
+    - cron: '0 * * * *'  
+  workflow_dispatch:    
+
+jobs:
+  deploy_script:
+    runs-on: ubuntu-latest 
+    
+    steps:
+      - name: 1. Downloading repository
+        uses: actions/checkout@v3
+
+      - name: 2. Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 3. Downloading libraries
+        run: pip install -r requirements.txt
+
+      - name: 4. Deploying
+        run: python api.py
+
+      - name: 5. update DB
+        run: |
+          git config --global user.name "Robot"
+          git config --global user.email "robot@github.com"
+          git add weather_data.db
+          git commit -m "automatic db update" || echo "nothing changed"
+          git push
