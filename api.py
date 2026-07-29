@@ -80,11 +80,11 @@ with db.connect("weather_data.db") as conn:
                             latitude REAL,
                             UNIQUE(latitude, longitude))""")
     cursor.execute("""INSERT OR IGNORE INTO dim_cities (city_name, country, longitude, latitude)
-                    VALUES('Kwidzyn','Poland', 18.9311, 53.7249  ),
-                        ('HEL','Poland', 18.8035, 54.6038  ),
-                        ('London','England', -0.1257, 51.5085  ),
-                        ('Los Angeles','USA', -118.2437, 34.0522  ),
-                        ('Bridgetown','Barbados', -59.6202, 13.1073  )
+                    VALUES('Kwidzyn','Poland', 18.939999, 53.72  ),
+                        ('HEL','Poland', 18.8, 54.62  ),
+                        ('London','England', -0.25, 51.5  ),
+                        ('Los Angeles','USA', -118.23433, 34.060257  ),
+                        ('Bridgetown','Barbados', -59.59018, 13.110721  )
                        """)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS fact_actual (
