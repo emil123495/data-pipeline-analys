@@ -1,0 +1,34 @@
+import streamlit as st
+import pandas as pd
+import sqlite3
+
+@st.cache_data
+def load_data(query):
+    with sqlite3.connect("weather_data.db") as conn:
+        df = pd.read_sql_query(query, conn)
+    return df
+
+df = load_data("""SELECT
+                   fact_actual.time,
+                   fact_actual.longitude,
+                   fact_actual.latitude,
+                   fact_actual.temperature_2m actual_temp,
+                   fact_forecast.fetch_time,
+                   fact_forecast.temperature_2m as predicted_temp,
+                   fact_forecast.lead_time as how_many_hours_before,
+                   (fact_actual.temperature_2m - fact_forecast.temperature_2m) as error,
+                   dim_cities.country,
+                   dim_cities.city_name
+               FROM fact_actual
+               JOIN fact_forecast
+                   ON fact_actual.latitude = fact_forecast.latitude
+                   AND fact_actual.longitude = fact_forecast.longitude
+                   AND fact_actual.time = fact_forecast.time
+               JOIN dim_cities 
+                   ON dim_cities.longitude = fact_actual.longitude
+                   AND dim_cities.latitude = fact_actual.latitude
+               WHERE how_many_hours_before > 0 AND dim_cities.city_name = "Kwidzyn" AND fact_actual.time = "2026-07-30 11:00:00"
+               ORDER BY fact_actual.longitude DESC 
+               """)
+
+st.line_chart(df, x = "how_many_hours_before", y = "error")
