@@ -18,19 +18,33 @@ with sqlite3.connect("weather_data.db") as conn:
                    fact_forecast.fetch_time,
                    fact_forecast.temperature_2m as predicted_temp,
                    fact_forecast.lead_time as how_many_hours_before,
-                   (fact_actual.temperature_2m - fact_forecast.temperature_2m) as error,
-                   dim_cities.country,
-                   dim_cities.city_name
-               FROM fact_actual
-               JOIN fact_forecast
-                   ON fact_actual.latitude = fact_forecast.latitude
+                  (fact_actual.temperature_2m - fact_forecast.temperature_2m) as error,
+                  dim_cities.country,
+                  dim_cities.city_name
+              FROM fact_actual
+              JOIN fact_forecast
+                  ON fact_actual.latitude = fact_forecast.latitude
                    AND fact_actual.longitude = fact_forecast.longitude
                    AND fact_actual.time = fact_forecast.time
                JOIN dim_cities 
                    ON dim_cities.longitude = fact_actual.longitude
                    AND dim_cities.latitude = fact_actual.latitude
-               WHERE how_many_hours_before > 0
-               ORDER BY fact_actual.longitude DESC 
+               WHERE how_many_hours_before > 0 AND dim_cities.city_name = "Bridgetown" AND fact_actual.time = "2026-07-30 11:00:00"
+               ORDER BY how_many_hours_before DESC 
                """
-   df_read = pd.read_sql_query(query, conn)
+    #query =     """SELECT
+    #                   fact_forecast.lead_time as how_many_hours_before,
+    #                   AVG(ABS(fact_actual.temperature_2m - fact_forecast.temperature_2m)) as error
+    #               FROM fact_actual
+    #               JOIN fact_forecast
+    #                   ON fact_actual.latitude = fact_forecast.latitude
+    #                   AND fact_actual.longitude = fact_forecast.longitude
+    #                   AND fact_actual.time = fact_forecast.time
+    #               JOIN dim_cities 
+    #                   ON dim_cities.longitude = fact_actual.longitude
+    #                   AND dim_cities.latitude = fact_actual.latitude
+    #               WHERE how_many_hours_before > 0 AND dim_cities.city_name = "HEL" 
+    #               GROUP BY how_many_hours_before
+    #               """
+df_read = pd.read_sql_query(query, conn)
 print(df_read)
