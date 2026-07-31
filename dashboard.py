@@ -50,8 +50,8 @@ def load_cities(city_name):
 
 
 list_of_cities = ["Kwidzyn", "HEL", "Los Angeles", "Bridgetown", "London"]
-selected_city = st.sidebar.selectbox("Select city", list_of_cities)
 st.set_page_config(page_title="Weather Forecast Accuracy", layout="wide")
+selected_city = st.sidebar.selectbox("Select city", list_of_cities)
 st.title("🌤️ Weather Forecast Accuracy Dashboard")
 st.caption("Analysis of Open-Meteo forecast accuracy depending on lead time")
 st.title(selected_city.upper())
