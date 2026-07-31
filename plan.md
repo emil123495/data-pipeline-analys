@@ -153,7 +153,7 @@ Grupowane po `lead_time_hours` (lub zaokrąglone do dni: `lead_time_hours / 24`)
 - [ ] Streamlit: wykres główny — oś X = lead_time (dni), oś Y = średni błąd bezwzględny temperatury
 - [ ] KPI: "średni błąd prognozy na 24h: X°C", "na 7 dni: Y°C"
 
-### ⚙️ Faza V3 — Wersja inżynierska (pro do CV)
+### ⚙️ Faza V3 — Wersja inż
 
 - [ ] Migracja SQLite → PostgreSQL w Dockerze
 - [ ] UPSERT (`INSERT ... ON CONFLICT DO UPDATE`) w Postgresie
