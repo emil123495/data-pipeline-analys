@@ -22,7 +22,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 4. Deploying
-        run: python api.py
+        run: python main.py
 
       - name: 5. update DB
         run: |
